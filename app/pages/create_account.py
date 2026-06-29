@@ -33,9 +33,9 @@ if st.button("Create Account"):
 
         st.success("Account created.")
 
-        st.switch_page("app/pages/login.py")
+        st.switch_page("pages/dashboard.py")
 
 st.button(
     "Back",
-    on_click=lambda: st.switch_page("app/pages/home.py")
+    on_click=lambda: st.switch_page("pages/home.py")
 )

@@ -1,7 +1,7 @@
 import streamlit as st
 
 if not st.session_state.get("logged_in"):
-    st.switch_page("app/pages/home.py")
+    st.switch_page("pages/home.py")
 
 st.set_page_config(page_title="Dashboard")
 
@@ -15,7 +15,7 @@ if st.button(
     "➕ Create New Chat",
     use_container_width=True
 ):
-    st.switch_page("app/pages/chat.py")
+    st.switch_page("pages/chat.py")
 
 if st.button(
     "📂 Load Existing Chat",
@@ -29,4 +29,4 @@ if st.button("Logout"):
 
     st.session_state.clear()
 
-    st.switch_page("app/pages/home.py")
+    st.switch_page("pages/home.py")

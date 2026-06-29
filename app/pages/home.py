@@ -21,8 +21,8 @@ col1, col2 = st.columns(2)
 
 with col1:
     if st.button("Login", use_container_width=True):
-        st.switch_page("app/pages/login.py")
+        st.switch_page("pages/login.py")
 
 with col2:
     if st.button("Create Account", use_container_width=True):
-        st.switch_page("app/pages/create_account.py")
+        st.switch_page("pages/create_account.py")

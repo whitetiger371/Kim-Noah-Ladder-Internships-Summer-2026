@@ -27,9 +27,9 @@ if st.button("Login"):
 
         st.success("Login successful.")
 
-        st.switch_page("app/pages/dashboard.py")
+        st.switch_page("pages/dashboard.py")
 
 st.button(
     "Back",
-    on_click=lambda: st.switch_page("app/pages/home.py")
+    on_click=lambda: st.switch_page("pages/home.py")
 )
