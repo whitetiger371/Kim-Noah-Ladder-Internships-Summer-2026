@@ -9,6 +9,9 @@ st.set_page_config(
     page_icon="🔐"
 )
 
+if st.button("⬅️ Back to Dashboard"):
+    st.switch_page("pages/dashboard.py")
+
 st.title("🔐 Secure Coding Chatbot")
 
 st.write(

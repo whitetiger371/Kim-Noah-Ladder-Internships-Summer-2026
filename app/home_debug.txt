@@ -1,0 +1,2 @@
+MAIN_SCRIPT_PATH: C:\Users\Noah\Downloads\Antigravity IDE\Ladder Internships\app\app.py
+DIRECTORY: C:\Users\Noah\Downloads\Antigravity IDE\Ladder Internships\app
