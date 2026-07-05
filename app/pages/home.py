@@ -21,9 +21,9 @@ st.markdown("""
 footer {visibility:hidden;}
 header {visibility:hidden;}
 
-/* Enhance background and remove default Streamlit container backgrounds */
+/* Dark Theme */
 .stApp {
-    background-color: #f8fafc;
+    background-color: #0e1117;
 }
 
 .title {
@@ -31,15 +31,15 @@ header {visibility:hidden;}
     font-size: 3rem;
     font-weight: 800;
     margin-top: 5vh;
-    color: #1e293b;
-    background: -webkit-linear-gradient(#2563eb, #3b82f6);
+    color: #ffffff;
+    background: -webkit-linear-gradient(#4facfe, #00f2fe);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .subtitle {
     text-align: center;
-    color: #475569;
+    color: #a0aec0;
     font-size: 1.2rem;
     margin-bottom: 8vh;
     padding: 0 20px;
@@ -64,15 +64,15 @@ div.stButton > button {
     font-weight: bold;
     border: none;
     color: white;
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    box-shadow: 0px 10px 25px rgba(37, 99, 235, 0.3);
+    background: linear-gradient(135deg, #1f77ff, #0057d8);
+    box-shadow: 0px 10px 25px rgba(31, 119, 255, 0.3);
     transition: all .25s ease;
     white-space: pre-wrap; /* Ensure text wraps correctly */
 }
 
 div.stButton > button:hover {
     transform: translateY(-5px) scale(1.05);
-    box-shadow: 0px 15px 35px rgba(37, 99, 235, 0.4);
+    box-shadow: 0px 15px 35px rgba(31, 119, 255, 0.5);
     color: white;
 }
 

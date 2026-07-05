@@ -18,66 +18,92 @@ st.markdown("""
 footer {visibility:hidden;}
 header {visibility:hidden;}
 
-.main{
-    background:#f5f7fa;
+/* Dark Theme */
+.stApp {
+    background-color: #0e1117;
+    color: #ffffff;
 }
 
-.dashboard-card{
-    background:white;
-    padding:2.5rem;
-    border-radius:20px;
-    box-shadow:0 8px 25px rgba(0,0,0,.15);
-    max-width:550px;
-    margin:auto;
+.dashboard-card {
+    background: #1a1c23;
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    max-width: 550px;
+    margin: auto;
+    border: 1px solid #2d333b;
 }
 
-.title{
-    text-align:center;
-    font-size:2.8rem;
-    font-weight:bold;
-    margin-bottom:10px;
+.title {
+    text-align: center;
+    font-size: 2.8rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #ffffff;
+    background: -webkit-linear-gradient(#4facfe, #00f2fe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.subtitle{
-    text-align:center;
-    color:#666;
-    font-size:1.2rem;
-    margin-bottom:40px;
+.subtitle {
+    text-align: center;
+    color: #a0aec0;
+    font-size: 1.2rem;
+    margin-bottom: 40px;
 }
 
-.welcome{
-    text-align:center;
-    font-size:1.3rem;
-    margin-bottom:40px;
+.welcome {
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 40px;
+    color: #e2e8f0;
 }
 
-div.stButton > button{
-    width:200px;
-    height:200px;
-    border-radius:50%;
-    font-size:22px;
-    font-weight:bold;
-    color:white;
-    border:none;
-    background:linear-gradient(135deg,#1f77ff,#0057d8);
-    box-shadow:0 10px 25px rgba(0,0,0,.25);
-    transition:all .25s ease;
+div[data-testid="stButton"] {
+    background: transparent !important;
 }
 
-div.stButton > button:hover{
-    transform:scale(1.05);
-    box-shadow:0 14px 35px rgba(0,0,0,.30);
+div.stButton {
+    display: flex;
+    justify-content: center;
+    background-color: transparent !important;
 }
 
-.logout button{
-    width:130px !important;
-    height:130px !important;
-    background:linear-gradient(135deg,#888,#666) !important;
-    font-size:18px !important;
+div.stButton > button {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    background: linear-gradient(135deg, #1f77ff, #0057d8);
+    box-shadow: 0 10px 25px rgba(31, 119, 255, 0.3);
+    transition: all .25s ease;
+    white-space: pre-wrap;
 }
 
-.spacer{
-    height:45px;
+div.stButton > button:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 35px rgba(31, 119, 255, 0.5);
+    color: white;
+}
+
+.logout button {
+    width: 130px !important;
+    height: 130px !important;
+    font-size: 18px !important;
+    background: linear-gradient(135deg, #4b5563, #374151) !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3) !important;
+}
+
+.logout button:hover {
+    background: linear-gradient(135deg, #6b7280, #4b5563) !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4) !important;
+}
+
+.spacer {
+    height: 45px;
 }
 
 </style>
