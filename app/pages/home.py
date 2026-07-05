@@ -21,27 +21,39 @@ st.markdown("""
 footer {visibility:hidden;}
 header {visibility:hidden;}
 
-.main {
-    background-color: #f5f7fa;
+/* Enhance background and remove default Streamlit container backgrounds */
+.stApp {
+    background-color: #f8fafc;
 }
 
 .title {
     text-align: center;
     font-size: 3rem;
-    font-weight: 700;
-    margin-top: 20px;
+    font-weight: 800;
+    margin-top: 5vh;
+    color: #1e293b;
+    background: -webkit-linear-gradient(#2563eb, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .subtitle {
     text-align: center;
-    color: #555;
+    color: #475569;
     font-size: 1.2rem;
-    margin-bottom: 40px;
+    margin-bottom: 8vh;
+    padding: 0 20px;
 }
 
-.button-container {
+/* Ensure no white boxes behind buttons */
+div[data-testid="stButton"] {
+    background: transparent !important;
+}
+
+div.stButton {
     display: flex;
     justify-content: center;
+    background-color: transparent !important;
 }
 
 div.stButton > button {
@@ -52,18 +64,20 @@ div.stButton > button {
     font-weight: bold;
     border: none;
     color: white;
-    background: linear-gradient(135deg,#1f77ff,#0057d8);
-    box-shadow: 0px 10px 25px rgba(0,0,0,.2);
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    box-shadow: 0px 10px 25px rgba(37, 99, 235, 0.3);
     transition: all .25s ease;
+    white-space: pre-wrap; /* Ensure text wraps correctly */
 }
 
 div.stButton > button:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 14px 35px rgba(0,0,0,.3);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0px 15px 35px rgba(37, 99, 235, 0.4);
+    color: white;
 }
 
-.spacer {
-    height: 60px;
+div.stButton > button:active {
+    transform: translateY(2px) scale(0.98);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -77,23 +91,14 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Push buttons toward center
-st.write("")
-st.write("")
-st.write("")
+# ---------- Buttons Layout ----------
+# Use two columns for perfect even spacing without extra side columns
+col1, col2 = st.columns(2)
 
-# ---------- Login Button ----------
-left, center, right = st.columns([1, 2, 1])
-
-with center:
+with col1:
     if st.button("🔑\n\nLogin"):
         st.switch_page("pages/login.py")
 
-st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
-
-# ---------- Create Account ----------
-left, center, right = st.columns([1, 2, 1])
-
-with center:
+with col2:
     if st.button("👤\n\nCreate\nAccount"):
         st.switch_page("pages/create_account.py")
