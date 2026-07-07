@@ -169,11 +169,16 @@ if create:
         st.error("Passwords do not match.")
 
     else:
-        # Save new account here
-
-        st.success("Account created.")
-
-        st.switch_page("pages/dashboard.py")
+        from security import create_user
+        success, msg = create_user(username, password)
+        
+        if success:
+            st.session_state.logged_in = True
+            st.session_state.username = username
+            st.success(msg)
+            st.switch_page("pages/dashboard.py")
+        else:
+            st.error(msg)
 
 if back:
     st.switch_page("pages/home.py")

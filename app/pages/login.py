@@ -165,14 +165,16 @@ if login:
     elif password == "":
         st.error("Enter a password.")
 
-    elif username == "admin" and password == "password123":
-        st.session_state.logged_in = True
-        st.session_state.username = username
-        st.success("Login successful.")
-        st.switch_page("pages/dashboard.py")
-
     else:
-        st.error("Invalid username or password.")
+        from security import verify_user
+        success, msg = verify_user(username, password)
+        if success:
+            st.session_state.logged_in = True
+            st.session_state.username = username
+            st.success(msg)
+            st.switch_page("pages/dashboard.py")
+        else:
+            st.error(msg)
 
 if back:
     st.switch_page("pages/home.py")
