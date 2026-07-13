@@ -1,4 +1,27 @@
+import os
+import json
 import streamlit as st
+from security import get_cipher
+
+@st.dialog("Load Saved Chat")
+def load_chat_dialog():
+    username = st.session_state.get("username", "anonymous")
+    save_dir = os.path.join("saved_chats", username)
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
+    files = [f for f in os.listdir(save_dir) if f.endswith(".enc")]
+    if not files:
+        st.info("No saved chats found.")
+        return
+    
+    selected_file = st.selectbox("Select a chat to load:", files)
+    if st.button("Load"):
+        cipher = get_cipher()
+        with open(os.path.join(save_dir, selected_file), "rb") as f:
+            encrypted_data = f.read()
+            decrypted_data = cipher.decrypt(encrypted_data)
+            st.session_state.messages = json.loads(decrypted_data.decode('utf-8'))
+        st.switch_page("pages/chat.py")
 
 st.set_page_config(
     page_title="Dashboard",
@@ -155,7 +178,7 @@ if new_chat:
     st.switch_page("pages/chat.py")
 
 if load_chat:
-    st.info("Load chat functionality coming soon.")
+    load_chat_dialog()
 
 if logout:
     st.session_state.clear()

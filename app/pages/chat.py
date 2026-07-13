@@ -7,25 +7,30 @@ from security import validate_input, get_cipher
 from logger import save_chat
 from rate_limiter import allowed
 
-@st.dialog("Load Saved Chat")
-def load_chat_dialog():
-    username = st.session_state.get("username", "anonymous")
-    save_dir = os.path.join("saved_chats", username)
-    if not os.path.exists(save_dir):
-        os.makedirs(save_dir)
-    files = [f for f in os.listdir(save_dir) if f.endswith(".enc")]
-    if not files:
-        st.info("No saved chats found.")
-        return
-    
-    selected_file = st.selectbox("Select a chat to load:", files)
-    if st.button("Load"):
+@st.dialog("Save Chat")
+def save_chat_dialog():
+    chat_name = st.text_input("Enter a name for this chat:", value=f"chat_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
+    if st.button("Save"):
+        if not chat_name.strip():
+            st.error("Name cannot be empty.")
+            return
+            
+        username = st.session_state.get("username", "anonymous")
+        save_dir = os.path.join("saved_chats", username)
+        if not os.path.exists(save_dir):
+            os.makedirs(save_dir)
+            
+        if not chat_name.endswith(".enc"):
+            filename = f"{chat_name.strip()}.enc"
+        else:
+            filename = chat_name.strip()
+            
         cipher = get_cipher()
-        with open(os.path.join(save_dir, selected_file), "rb") as f:
-            encrypted_data = f.read()
-            decrypted_data = cipher.decrypt(encrypted_data)
-            st.session_state.messages = json.loads(decrypted_data.decode('utf-8'))
-        st.rerun()
+        json_data = json.dumps(st.session_state.messages).encode('utf-8')
+        encrypted_data = cipher.encrypt(json_data)
+        with open(os.path.join(save_dir, filename), "wb") as f:
+            f.write(encrypted_data)
+        st.success(f"Saved to {filename}")
 
 st.set_page_config(
     page_title="Secure Coding Chatbot",
@@ -73,30 +78,16 @@ div.stButton > button:hover {
 </style>
 """, unsafe_allow_html=True)
 
-col1, col2, col3 = st.columns([2, 1, 1])
+col1, col2 = st.columns([3, 1])
 with col1:
     if st.button("⬅️ Back to Dashboard"):
         st.switch_page("pages/dashboard.py")
 with col2:
     if st.button("💾 Save Chat"):
         if "messages" in st.session_state and st.session_state.messages:
-            username = st.session_state.get("username", "anonymous")
-            save_dir = os.path.join("saved_chats", username)
-            if not os.path.exists(save_dir):
-                os.makedirs(save_dir)
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename = f"chat_{timestamp}.enc"
-            cipher = get_cipher()
-            json_data = json.dumps(st.session_state.messages).encode('utf-8')
-            encrypted_data = cipher.encrypt(json_data)
-            with open(os.path.join(save_dir, filename), "wb") as f:
-                f.write(encrypted_data)
-            st.success(f"Saved to {filename}")
+            save_chat_dialog()
         else:
             st.warning("No messages to save.")
-with col3:
-    if st.button("📂 Load Chat"):
-        load_chat_dialog()
 
 st.title("🔐 Secure Coding Chatbot")
 
