@@ -9,7 +9,7 @@ from rate_limiter import allowed
 
 @st.dialog("Save Chat")
 def save_chat_dialog():
-    chat_name = st.text_input("Enter a name for this chat:", value=f"chat_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
+    chat_name = st.text_input("Enter a name for this chat:", value=st.session_state.get("current_chat_name", "chat"))
     if st.button("Save"):
         if not chat_name.strip():
             st.error("Name cannot be empty.")
@@ -20,10 +20,7 @@ def save_chat_dialog():
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
             
-        if not chat_name.endswith(".enc"):
-            filename = f"{chat_name.strip()}.enc"
-        else:
-            filename = chat_name.strip()
+        filename = chat_name.strip()
             
         cipher = get_cipher()
         json_data = json.dumps(st.session_state.messages).encode('utf-8')
@@ -85,6 +82,7 @@ with col1:
 with col2:
     if st.button("💾 Save Chat"):
         if "messages" in st.session_state and st.session_state.messages:
+            st.session_state.current_chat_name = f"chat_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
             save_chat_dialog()
         else:
             st.warning("No messages to save.")

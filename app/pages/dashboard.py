@@ -9,19 +9,26 @@ def load_chat_dialog():
     save_dir = os.path.join("saved_chats", username)
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
-    files = [f for f in os.listdir(save_dir) if f.endswith(".enc")]
+    files = [f for f in os.listdir(save_dir) if os.path.isfile(os.path.join(save_dir, f))]
     if not files:
         st.info("No saved chats found.")
         return
     
     selected_file = st.selectbox("Select a chat to load:", files)
-    if st.button("Load"):
-        cipher = get_cipher()
-        with open(os.path.join(save_dir, selected_file), "rb") as f:
-            encrypted_data = f.read()
-            decrypted_data = cipher.decrypt(encrypted_data)
-            st.session_state.messages = json.loads(decrypted_data.decode('utf-8'))
-        st.switch_page("pages/chat.py")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("Load"):
+            cipher = get_cipher()
+            with open(os.path.join(save_dir, selected_file), "rb") as f:
+                encrypted_data = f.read()
+                decrypted_data = cipher.decrypt(encrypted_data)
+                st.session_state.messages = json.loads(decrypted_data.decode('utf-8'))
+            st.switch_page("pages/chat.py")
+    with col2:
+        if st.button("Delete"):
+            os.remove(os.path.join(save_dir, selected_file))
+            st.rerun()
 
 st.set_page_config(
     page_title="Dashboard",
@@ -175,6 +182,7 @@ with c:
 # ---------------- Logic ----------------
 
 if new_chat:
+    st.session_state.messages = []
     st.switch_page("pages/chat.py")
 
 if load_chat:
