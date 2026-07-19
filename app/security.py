@@ -26,7 +26,20 @@ def load_users():
         encrypted_data = f.read()
     try:
         decrypted_data = cipher.decrypt(encrypted_data)
-        return json.loads(decrypted_data.decode('utf-8'))
+        data = json.loads(decrypted_data.decode('utf-8'))
+        
+        # Migrate old format if needed
+        migrated = False
+        for k, v in data.items():
+            if isinstance(v, str):
+                role = "admin" if k == "admin" else "user"
+                data[k] = {"password": v, "role": role}
+                migrated = True
+                
+        if migrated:
+            save_users(data)
+            
+        return data
     except Exception:
         # Failsafe in case of a previously unencrypted file or corrupted data
         return {}
@@ -48,13 +61,13 @@ def verify_password(stored_password, provided_password):
     """Verify a stored password against one provided by user using bcrypt."""
     return bcrypt.checkpw(provided_password.encode('utf-8'), stored_password.encode('utf-8'))
 
-def create_user(username, password):
+def create_user(username, password, role="user"):
     users = load_users()
         
     if username in users:
         return False, "Username already exists."
         
-    users[username] = hash_password(password)
+    users[username] = {"password": hash_password(password), "role": role}
     save_users(users)
         
     return True, "Account created successfully."
@@ -65,13 +78,21 @@ def verify_user(username, password):
     if username not in users:
         # Fallback to default admin for testing purposes
         if username == "admin" and password == "password123":
-            return True, "Login successful."
-        return False, "Invalid username or password."
+            return True, "Login successful.", "admin"
+        return False, "Invalid username or password.", None
         
-    if verify_password(users[username], password):
-        return True, "Login successful."
+    user_data = users[username]
+    if isinstance(user_data, str):
+        stored_password = user_data
+        role = "user"
     else:
-        return False, "Invalid username or password."
+        stored_password = user_data.get("password")
+        role = user_data.get("role", "user")
+        
+    if verify_password(stored_password, password):
+        return True, "Login successful.", role
+    else:
+        return False, "Invalid username or password.", None
 
 
 MAX_INPUT_LENGTH = 10000

@@ -16,11 +16,17 @@ def save_chat_dialog():
             return
             
         username = st.session_state.get("username", "anonymous")
+        username = "".join(c for c in username if c.isalnum())
+        if not username:
+            username = "anonymous"
         save_dir = os.path.join("saved_chats", username)
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
             
-        filename = chat_name.strip()
+        filename = "".join(c for c in chat_name.strip() if c.isalnum() or c in ("_", "-"))
+        if not filename:
+            st.error("Invalid chat name.")
+            return
             
         cipher = get_cipher()
         json_data = json.dumps(st.session_state.messages).encode('utf-8')

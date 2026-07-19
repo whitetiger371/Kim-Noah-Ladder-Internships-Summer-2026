@@ -159,6 +159,11 @@ with center:
 # ---------------- Logic ----------------
 if login:
 
+    from rate_limiter import allowed
+    if not allowed():
+        st.error("Too many login attempts. Please try again later.")
+        st.stop()
+
     if username == "":
         st.error("Enter a username.")
 
@@ -167,10 +172,11 @@ if login:
 
     else:
         from security import verify_user
-        success, msg = verify_user(username, password)
+        success, msg, role = verify_user(username, password)
         if success:
             st.session_state.logged_in = True
             st.session_state.username = username
+            st.session_state.role = role
             st.success(msg)
             st.switch_page("pages/dashboard.py")
         else:

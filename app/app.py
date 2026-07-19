@@ -11,6 +11,8 @@ pages = [
     st.Page("pages/login.py", title="Login", icon="🔑"),
     st.Page("pages/create_account.py", title="Create Account", icon="📝"),
     st.Page("pages/dashboard.py", title="Dashboard", icon="📊"),
+    st.Page("pages/reports.py", title="Reports & Audit", icon="📋"),
+    st.Page("pages/admin.py", title="Admin Panel", icon="⚙️"),
     st.Page("pages/chat.py", title="Chat", icon="💬"),
 ]
 

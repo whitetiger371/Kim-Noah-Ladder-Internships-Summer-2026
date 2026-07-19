@@ -6,6 +6,10 @@ from security import get_cipher
 @st.dialog("Load Saved Chat")
 def load_chat_dialog():
     username = st.session_state.get("username", "anonymous")
+    # Prevent path traversal
+    username = "".join(c for c in username if c.isalnum())
+    if not username:
+        username = "anonymous"
     save_dir = os.path.join("saved_chats", username)
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
@@ -20,14 +24,16 @@ def load_chat_dialog():
     with col1:
         if st.button("Load"):
             cipher = get_cipher()
-            with open(os.path.join(save_dir, selected_file), "rb") as f:
+            safe_file = os.path.basename(selected_file)
+            with open(os.path.join(save_dir, safe_file), "rb") as f:
                 encrypted_data = f.read()
                 decrypted_data = cipher.decrypt(encrypted_data)
                 st.session_state.messages = json.loads(decrypted_data.decode('utf-8'))
             st.switch_page("pages/chat.py")
     with col2:
         if st.button("Delete"):
-            os.remove(os.path.join(save_dir, selected_file))
+            safe_file = os.path.basename(selected_file)
+            os.remove(os.path.join(save_dir, safe_file))
             st.rerun()
 
 st.set_page_config(
@@ -167,6 +173,21 @@ _, c, _ = st.columns([1,2,1])
 with c:
     load_chat = st.button("📂\n\nLoad\nChat")
 
+st.markdown("<div class='spacer'></div>", unsafe_allow_html=True)
+
+# ---------- Reports & Audit ----------
+_, c, _ = st.columns([1,2,1])
+
+with c:
+    reports = st.button("📋\n\nReports\n& Audit")
+
+admin_panel = False
+if st.session_state.get("role") == "admin":
+    st.markdown("<div class='spacer'></div>", unsafe_allow_html=True)
+    _, c, _ = st.columns([1,2,1])
+    with c:
+        admin_panel = st.button("⚙️\n\nAdmin\nPanel")
+
 st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
@@ -187,6 +208,12 @@ if new_chat:
 
 if load_chat:
     load_chat_dialog()
+
+if reports:
+    st.switch_page("pages/reports.py")
+
+if admin_panel:
+    st.switch_page("pages/admin.py")
 
 if logout:
     st.session_state.clear()

@@ -159,8 +159,16 @@ with center:
 
 if create:
 
+    from rate_limiter import allowed
+    if not allowed():
+        st.error("Too many requests. Please try again later.")
+        st.stop()
+
     if username == "":
         st.error("Username required.")
+
+    elif not username.isalnum():
+        st.error("Username must be alphanumeric.")
 
     elif password == "":
         st.error("Password required.")

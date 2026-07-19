@@ -1,0 +1,7 @@
+{
+    "rate_limit": {
+        "requests": 20,
+        "window": 60
+    },
+    "retention_days": 30
+}
