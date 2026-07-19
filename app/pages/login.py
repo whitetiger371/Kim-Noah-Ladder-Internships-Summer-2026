@@ -177,6 +177,8 @@ if login:
             st.session_state.logged_in = True
             st.session_state.username = username
             st.session_state.role = role
+            from logger import log_activity
+            log_activity(username, "login")
             st.success(msg)
             st.switch_page("pages/dashboard.py")
         else:

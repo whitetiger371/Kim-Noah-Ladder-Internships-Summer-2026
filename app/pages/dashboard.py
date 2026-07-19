@@ -216,5 +216,7 @@ if admin_panel:
     st.switch_page("pages/admin.py")
 
 if logout:
+    from logger import log_activity
+    log_activity(st.session_state.get("username", "anonymous"), "logout")
     st.session_state.clear()
     st.switch_page("pages/home.py")
